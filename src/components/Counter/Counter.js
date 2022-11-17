@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import React, { useState } from 'react';
 import './Counter.css';
 import { counterActions } from '../../store/index';
+import { Navigate } from 'react-router';
 
 const Counter = (props) => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated); // put the name of the slice
@@ -10,7 +11,7 @@ const Counter = (props) => {
   // useSelector is used for getting data out of the store
   const counter = useSelector(state => state.counter.counter); // this will make a subscription
   const show = useSelector(state => state.counter.showCounter)
-
+ 
   const dispatch = useDispatch();
 
   const incrementHandler = () => {
@@ -29,6 +30,9 @@ const Counter = (props) => {
     dispatch(counterActions.toggleCounter());
   }
 
+  if (!isAuthenticated)
+  return <Navigate to={"/login"}/>;
+  else{
   return (
     <main className="Counter">
       <h1>Redux Counter</h1>
@@ -42,7 +46,7 @@ const Counter = (props) => {
       </div>
       <button onClick={toggleCounterHandler}>Toggle Counter</button>
     </main>
-  );
+  );}
 };
 
 export default Counter;

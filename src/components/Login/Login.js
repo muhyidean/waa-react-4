@@ -16,11 +16,17 @@ const Login = (props) => {
   const formData = useRef();
 
 
-  const doLogin = createAsyncThunk('login', async (userCredentials) => {
-    const res = await axios.post('http://localhost:8080/api/v1/uaa', userCredentials);
+  const doLogin = createAsyncThunk('login',
+    async (userCredentials) => {
+      const res = await axios.post('http://localhost:8080/api/v1/authenticate', userCredentials);
+      return res.data;
+    });
+  // THIS WILL NOT WORK
+  // const doLogin = async (userCredentials) => {
+  //   const res = await axios.post('http://localhost:8080/api/v1/authenticate', userCredentials);
+  //   return res.data;
+  // };
 
-    return res.data;
-  });
 
   const loginHandler = async (e) => {
     e.preventDefault();
@@ -28,8 +34,9 @@ const Login = (props) => {
     const userCredentials = { email: form['user'].value, password: form['password'].value };
     const result = await dispatch(doLogin(userCredentials));
     dispatch(authActions.loginSuccessful());
-    Cookies.set('user', result.payload);
-    navigate('/dashboard');
+    Cookies.set('user', result.payload.accessToken);
+    // add to default headers 
+    navigate('/user');
   };
 
   return (

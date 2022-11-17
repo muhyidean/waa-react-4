@@ -5,14 +5,18 @@ import { authActions } from '../../store/index';
 import { Link, Redirect } from 'react-router-dom';
 import 'react-router';
 import { useNavigate } from 'react-router';
+import Cookie from 'js-cookie';
 
-const Header = () => { 
+const Header = () => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const dispatch = useDispatch();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+
 
   const logoutHandler = () => {
     dispatch(authActions.logout());
+    Cookie.remove('user')
+    window.location.reload(); // FIXME This has to be replaced with Cookie.remove('user', path=('') ...) 
     navigate('/login');
   }
 
@@ -21,12 +25,11 @@ const Header = () => {
       <header className="header">
         <h1>Redux Auth Demo</h1>
         <ul>
-        
-        {/* DEAN !!! */}
+
           <li>
             <Link to="/">My Products</Link>
           </li>
-        
+
           <li>
             <Link to="/counter"> Counter </Link>
           </li>
