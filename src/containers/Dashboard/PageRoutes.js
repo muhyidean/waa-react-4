@@ -4,7 +4,6 @@ import Login from '../../components/Login/Login'
 import UserProfile from '../../components/UserProfile/UserProfile'
 import Counter from '../../components/Counter/Counter'
 import React from 'react';
-import Dashboard from "./Dashboard";
 
 export default function PageRoutes() {
     return (
